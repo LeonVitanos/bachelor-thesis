@@ -2,8 +2,8 @@
 
 Thesis for my BSc degree in Computer Science at Aristotle University
 
-## Jupyter Notebook
-The code i wrote is publicly available [here](https://github.com/LeonVitanos/Thesis/blob/master/Thesis.ipynb).
+## Jupyter Notebook / License
+Code is publicly available [here](https://github.com/LeonVitanos/Thesis/blob/master/Thesis.ipynb). See the [LICENSE](https://github.com/LeonVitanos/Thesis/blob/master/LICENSE) file for license rights and limitations (MIT).
 
 ## Abstract
 
