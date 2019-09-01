@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.lang.Math;
 
-import static java.lang.Math.sqrt;
-
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
     private TextView xText, yText, zText, textView;
@@ -84,6 +82,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     xText.setVisibility(View.INVISIBLE);
                     yText.setVisibility(View.INVISIBLE);
                     zText.setVisibility(View.INVISIBLE);
+                    gestureText.setVisibility(View.VISIBLE);
+
+                    if(count<10 || count>30){
+                        if(count<10) gestureText.setText("Too fast, try slower");
+                        else if(count>30) gestureText.setText("Too slow, try faster" + count);
+                        count=0;
+                        return;
+                    }
 
                     ArrayList<Float> x_haar = new ArrayList<Float>();
                     ArrayList<Float> y_haar = new ArrayList<Float>();
@@ -93,11 +99,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     x_haar = multilevel_haar_transform(x);
                     y_haar = multilevel_haar_transform(y);
                     z_haar = multilevel_haar_transform(z);
-
-                    for(int i=0;i<x_haar.size();i++){
-                        //System.out.println();
-                        System.out.printf(" %.15f %n", x_haar.get(i));
-                    }
 
                     while(x_haar.size()<8)
                         x_haar.add((float)0);
@@ -131,10 +132,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     y = new ArrayList<Float>();
                     z = new ArrayList<Float>();
 
-                    gestureText.setText(String.valueOf(max_percentage) + " sure it is gesture:");
-                    gestureText.setVisibility(View.VISIBLE);
+                    gestureText.setText(String.valueOf(max_percentage) + " sure it is gesture:" + count);
                     gestureNumber.setText(String.valueOf(gesture_class+1));
-                   // textView.setText(String.valueOf(count));
                     count=0;
                     gestureNumber.setVisibility(View.VISIBLE);
                 }
@@ -163,9 +162,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         float[][] gesture = new float[1][20];
 
         tflite.run(ret, gesture);
-        //System.out.println("Gestures");
-        //for(int i=0; i<20; i++)
-        //    System.out.printf("gesture %d: %f\n",i, gesture[0][i]);
 
         return gesture;
     }
@@ -185,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
         long currentTimeMillis = System.currentTimeMillis();
 
-        // Trying to add a sample every ~100ms
+        // Trying to add a sample every ~100ms / sampling rate ~10Hz
         if(last_time_stamp_added==0){
             last_time_stamp_added=currentTimeMillis;
             addSensorData(sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]);
@@ -197,9 +193,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             temp_z = sensorEvent.values[2];
         }
         else{
-            //System.out.println(0);
-            //System.out.println(Math.abs(last_time_stamp-last_time_stamp_added-100));
-            //System.out.println(currentTimeMillis-last_time_stamp_added-100);
             if(Math.abs(last_time_stamp-last_time_stamp_added-100) <= currentTimeMillis-last_time_stamp_added-100){
                 last_time_stamp_added=last_time_stamp;
                 addSensorData(temp_x, temp_y, temp_z);
@@ -302,13 +295,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     protected void onResume() {
         super.onResume();
-        //SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_UI);
     }
 
     protected void onPause() {
         super.onPause();
-        //SM.unregisterListener(this);
     }
 
 }
-
