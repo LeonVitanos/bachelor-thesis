@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.tensorflow.lite.Interpreter;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         final Button button = findViewById(R.id.mainButton);
         final TextView gestureText = findViewById(R.id.gestureText);
-        final TextView gestureNumber = findViewById(R.id.gestureNumber);
+        final ImageView gestureImage = findViewById(R.id.imageView);
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                     if(count<10 || count>30){
                         if(count<10) gestureText.setText("Too fast, try slower");
-                        else if(count>30) gestureText.setText("Too slow, try faster" + count);
+                        else if(count>30) gestureText.setText("Too slow, try faster");
                         count=0;
                         return;
                     }
@@ -132,10 +133,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     y = new ArrayList<Float>();
                     z = new ArrayList<Float>();
 
-                    gestureText.setText(String.valueOf(max_percentage) + " sure it is gesture:" + count);
-                    gestureNumber.setText(String.valueOf(gesture_class+1));
+                    gestureText.setText(String.format("%.2f", max_percentage*100) + "% sure it is gesture:");
+                    System.out.println(gesture_class+1);
+                    int id = getResources().getIdentifier("gesture" + String.valueOf(gesture_class+1), "drawable", getPackageName());
+                    //int id = getResources().getIdentifier("gesture5", "drawable", getPackageName());
+                    gestureImage.setImageResource(id);
                     count=0;
-                    gestureNumber.setVisibility(View.VISIBLE);
+                    gestureImage.setVisibility(View.VISIBLE);
                 }
                 else {
                     SM.registerListener(MainActivity.this, mySensor, SensorManager.SENSOR_DELAY_GAME);
@@ -147,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     zText.setVisibility(View.VISIBLE);
 
                     gestureText.setVisibility(View.INVISIBLE);
-                    gestureNumber.setVisibility(View.INVISIBLE);
+                    gestureImage.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -174,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         zText.setText("Z: " + z_axis);
         z.add(z_axis);
         count += 1;
-        System.out.println(System.currentTimeMillis());
     }
 
     @Override
