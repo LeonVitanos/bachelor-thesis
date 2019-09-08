@@ -76,8 +76,7 @@
             app:layout_constraintBottom_toTopOf="@+id/mainButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gestureText"
-            app:srcCompat="@drawable/gesture20" />
+            app:layout_constraintTop_toBottomOf="@+id/gestureText"/>
 
         <Button
             android:id="@+id/mainButton"
