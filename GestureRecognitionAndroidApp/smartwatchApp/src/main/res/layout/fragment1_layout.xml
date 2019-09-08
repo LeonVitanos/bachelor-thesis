@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:gravity="center"
+        android:lineSpacingExtra="2sp"
+        android:text="1. Press START\n2. Perform gesture\n3. Press STOP"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:textSize="18sp" />
+
+</LinearLayout>
